@@ -47,13 +47,13 @@ Base URL: `http://localhost:8080`
 
 ### Example: Retrieve Products
 
-
+```bash
 curl http://localhost:8080/api/products
-
+```
 
 ### Example: Create a Product
 
-
+```bash
 curl -X POST http://localhost:8080/api/products \
   -H "Content-Type: application/json" \
   -d '{
@@ -61,20 +61,20 @@ curl -X POST http://localhost:8080/api/products \
     "price": 29.99,
     "stock": 25
   }'
-
+```
 
 ### Example: Create an Order
 
 This example uses product ID `3`, which existed in the development database during testing. Make sure the product exists and has sufficient stock before running the request.
 
-
+```bash
 curl -X POST http://localhost:8080/api/orders \
   -H "Content-Type: application/json" \
   -d '{
     "productId": 3,
     "quantity": 2
   }'
-
+```    
 
 **Note:** Creating an order changes product stock. These examples are intended for a development environment.
 
@@ -92,34 +92,34 @@ Docker Compose is included with current Docker Desktop installations.
 
 1. Clone the repository:
 
-
+   ```bash 
    git clone https://github.com/Mayank212514/order-processing-platform.git
    cd order-processing-platform
-
+   ``` 
 
 2. Start the application and database:
 
-
+   ```bash 
    docker compose up --build -d
-
+   ``` 
 
 3. Check the running containers:
 
-
+   ```bash 
    docker compose ps
-
+   ``` 
 
 4. Retrieve the products:
 
-
+   ```bash 
    curl http://localhost:8080/api/products
-
+   ``` 
 
 ### Stop the Application
 
-
+```bash
 docker compose stop
-
+```
 
 This stops the services without intentionally removing their containers or database volume.
 
@@ -127,13 +127,15 @@ This stops the services without intentionally removing their containers or datab
 
 Run the automated tests using the Maven wrapper:
 
+```bash
 ./mvnw clean test
-
+```
 
 The project includes tests for product endpoints, order processing, validation, and error handling.
 
 ## Project Structure
 
+```text
 src/
 ├── main/
 │   └── java/com/orderplatform/orderservice/
@@ -150,7 +152,7 @@ Dockerfile
 compose.yaml
 pom.xml
 README.md
-
+```
 
 ## Database Configuration
 
