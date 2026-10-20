@@ -40,18 +40,12 @@ jobs:
 
       - name: Run Spring Boot tests
         env:
-          DB_URL: jdbc:postgresql://localhost:5432/orderdb_test
-          DB_USERNAME: orderuser
-          DB_PASSWORD: testpass
-        run: ./mvnw test
-
-      - name: Show test error details
-        if: always()
-        run: |
-          echo "=== Surefire report files ==="
-          find target/surefire-reports -maxdepth 1 -type f -print || true
-          echo "=== Test report contents ==="
-          cat target/surefire-reports/*.txt || true
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/orderdb_test
+          SPRING_DATASOURCE_USERNAME: orderuser
+          SPRING_DATASOURCE_PASSWORD: testpass
+          SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+          SPRING_JPA_SHOW_SQL: "false"
+        run: ./mvnw test  
   
   python-check:
     name: Python Analytics Check
