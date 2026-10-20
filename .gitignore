@@ -46,4 +46,7 @@ build/
 src/main/resources/application.properties
 src/test/resources/application-test.properties
 
-
+# Python analytics service
+analytics-service/.venv/
+analytics-service/__pycache__/
+analytics-service/**/*.py[cod]
