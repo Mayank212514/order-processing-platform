@@ -46,10 +46,13 @@ jobs:
         run: ./mvnw test
 
       - name: Show test error details
-        if: failure()
+        if: always()
         run: |
-          grep -R -n -A 12 -B 3 "Caused by:" target/surefire-reports/ || true
-          grep -R -n -E "Error creating bean|Failed to configure|Connection refused|APPLICATION FAILED" target/surefire-reports/ || true
+          echo "=== Surefire report files ==="
+          find target/surefire-reports -maxdepth 1 -type f -print || true
+          echo "=== Test report contents ==="
+          cat target/surefire-reports/*.txt || true
+  
   python-check:
     name: Python Analytics Check
     runs-on: ubuntu-latest
