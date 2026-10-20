@@ -12,6 +12,21 @@ jobs:
     name: Java Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: orderdb_test
+          POSTGRES_USER: orderuser
+          POSTGRES_PASSWORD: testpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U orderuser -d orderdb_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,6 +39,10 @@ jobs:
           cache: maven
 
       - name: Run Spring Boot tests
+        env:
+          DB_URL: jdbc:postgresql://localhost:5432/orderdb_test
+          DB_USERNAME: orderuser
+          DB_PASSWORD: testpass
         run: ./mvnw test
 
   python-check:
