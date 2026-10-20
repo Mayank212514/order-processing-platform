@@ -45,6 +45,11 @@ jobs:
           DB_PASSWORD: testpass
         run: ./mvnw test
 
+      - name: Show test error details
+        if: failure()
+        run: |
+          grep -R -n -A 12 -B 3 "Caused by:" target/surefire-reports/ || true
+          grep -R -n -E "Error creating bean|Failed to configure|Connection refused|APPLICATION FAILED" target/surefire-reports/ || true
   python-check:
     name: Python Analytics Check
     runs-on: ubuntu-latest
