@@ -88,3 +88,65 @@ def test_analytics_products(mock_get_connection):
         {"id": 1, "name": "Laptop", "price": 999.99, "stock": 10},
         {"id": 2, "name": "Mouse", "price": 25.00, "stock": 5},
     ]
+
+
+@patch("main.get_connection")
+def test_analytics_summary_with_no_orders(mock_get_connection):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+
+    mock_get_connection.return_value.__enter__.return_value = mock_conn
+    mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+    mock_cursor.fetchone.return_value = {
+        "total_orders": 0,
+        "total_revenue": 0,
+    }
+
+    response = client.get("/analytics/summary")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "total_orders": 0,
+        "total_revenue": 0,
+    }
+
+
+@patch("main.get_connection")
+def test_analytics_inventory_with_no_products(mock_get_connection):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+
+    mock_get_connection.return_value.__enter__.return_value = mock_conn
+    mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+    mock_cursor.fetchone.return_value = {
+        "total_products": 0,
+        "total_units": 0,
+        "inventory_value": 0,
+    }
+
+    response = client.get("/analytics/inventory")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "total_products": 0,
+        "total_units": 0,
+        "inventory_value": 0,
+    }
+
+
+@patch("main.get_connection")
+def test_analytics_products_with_no_products(mock_get_connection):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+
+    mock_get_connection.return_value.__enter__.return_value = mock_conn
+    mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+    mock_cursor.fetchall.return_value = []
+
+    response = client.get("/analytics/products")
+
+    assert response.status_code == 200
+    assert response.json() == []
