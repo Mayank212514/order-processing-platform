@@ -139,6 +139,23 @@ class OrderControllerTest {
             .andExpect(jsonPath("$.error").value("Validation failed"));
     }
 
+
+    @Test
+    void shouldRejectOrderWhenQuantityIsNegative() throws Exception {
+        mockMvc.perform(post("/api/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                          "productId": 1,
+                          "quantity": -1
+                        }
+                        """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Validation failed"));
+    }
+
+
     @Test
     void shouldReturnAllOrders() throws Exception {
         Product product = new Product();
